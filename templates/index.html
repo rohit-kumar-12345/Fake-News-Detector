@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fake News Detection System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/favicon.png') }}">
+
+</head>
+
+<body>
+
+    <div class="main-container">
+
+        <div class="card">
+
+            <div class="header">
+
+                <img
+                    src="{{ url_for('static', filename='images/indeximage.png') }}"
+                    alt="Fake News Detector"
+                    class="logo">
+
+                <h1>📰 Fake News Detection System</h1>
+
+                <p>
+                    Machine Learning powered application to classify
+                    whether a news article is <strong>Real</strong> or
+                    <strong>Fake</strong>.
+                </p>
+
+            </div>
+
+            <form action="/api" method="POST">
+
+                <div class="form-group">
+
+                    <label for="title">
+                        News Title
+                    </label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="Enter the news headline..."
+                        autocomplete="off"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="author">
+                        Author Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="author"
+                        name="author"
+                        placeholder="Enter author's name..."
+                        autocomplete="off"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="maintext">
+                        News Article
+                    </label>
+
+                    <textarea
+                        id="maintext"
+                        name="maintext"
+                        rows="12"
+                        placeholder="Paste the complete news article here..."
+                        required></textarea>
+
+                </div>
+
+                <button type="submit" class="predict-btn">
+
+                    🔍 Detect News
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <footer>
+
+        Developed by <strong>Rohit Kumar</strong> |
+        Machine Learning Project |
+        Fake News Detection using NLP & Logistic Regression
+
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,334 @@
+/* ==========================================
+   Fake News Detection System
+   Developed by Rohit Kumar
+========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    background:linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb);
+
+    min-height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:#333;
+
+}
+
+/* Main Container */
+
+.main-container{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px 20px;
+
+}
+
+/* Card */
+
+.card{
+
+    width:100%;
+
+    max-width:900px;
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:40px;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.25);
+
+    animation:fadeIn .8s ease;
+
+}
+
+/* Header */
+
+.header{
+
+    text-align:center;
+
+    margin-bottom:35px;
+
+}
+
+.logo{
+
+    width:140px;
+
+    height:140px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    margin-bottom:20px;
+
+    border:5px solid #2563eb;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+
+.header h1{
+
+    color:#1e3a8a;
+
+    font-size:38px;
+
+    margin-bottom:12px;
+
+}
+
+.header p{
+
+    color:#555;
+
+    font-size:17px;
+
+    line-height:1.7;
+
+}
+
+/* Form */
+
+form{
+
+    width:100%;
+
+}
+
+/* Form Group */
+
+.form-group{
+
+    margin-bottom:25px;
+
+}
+
+.form-group label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:bold;
+
+    color:#1f2937;
+
+    font-size:16px;
+
+}
+
+/* Input Fields */
+
+input,
+
+textarea{
+
+    width:100%;
+
+    padding:15px;
+
+    font-size:16px;
+
+    border:2px solid #d1d5db;
+
+    border-radius:10px;
+
+    outline:none;
+
+    transition:.3s;
+
+    font-family:Arial, Helvetica, sans-serif;
+
+}
+
+/* Focus Effect */
+
+input:focus,
+
+textarea:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 10px rgba(37,99,235,.25);
+
+}
+
+/* Textarea */
+
+textarea{
+
+    min-height:250px;
+
+    resize:vertical;
+
+}
+
+/* Placeholder */
+
+input::placeholder,
+
+textarea::placeholder{
+
+    color:#9ca3af;
+
+}
+
+/* Button */
+
+.predict-btn{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-size:19px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.predict-btn:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 20px rgba(37,99,235,.35);
+
+}
+
+/* Footer */
+
+footer{
+
+    width:100%;
+
+    text-align:center;
+
+    color:white;
+
+    padding:20px;
+
+    font-size:15px;
+
+}
+
+/* Animation */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    .card{
+
+        padding:25px;
+
+    }
+
+    .header h1{
+
+        font-size:30px;
+
+    }
+
+    .header p{
+
+        font-size:15px;
+
+    }
+
+    .logo{
+
+        width:110px;
+
+        height:110px;
+
+    }
+
+    textarea{
+
+        min-height:180px;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .card{
+
+        padding:20px;
+
+    }
+
+    .header h1{
+
+        font-size:24px;
+
+    }
+
+    .predict-btn{
+
+        font-size:17px;
+
+    }
+
+}
