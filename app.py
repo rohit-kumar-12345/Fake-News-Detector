@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, render_template
 import joblib
 
@@ -6,10 +7,10 @@ from feature import (
     remove_punctuation_stopwords_lemma
 )
 
-# Load trained pipeline
+# Load trained model
 pipeline = joblib.load("./pipeline.sav")
 
-# Create Flask application
+# Create Flask app
 app = Flask(__name__)
 
 
@@ -28,22 +29,23 @@ def predict():
         author = request.form.get("author", "")
         text = request.form.get("maintext", "")
 
-        # Combine all text
+        # Combine all inputs
         query = get_all_query(title, author, text)
 
-        # Apply preprocessing
+        # Preprocess text
         cleaned_query = [
             remove_punctuation_stopwords_lemma(query[0])
         ]
 
-        # Prediction
+        # Predict
         prediction = pipeline.predict(cleaned_query)
 
-        # Prediction probabilities
-        probabilities = pipeline.predict_proba(cleaned_query)
-
-        # Highest probability
-        confidence = max(probabilities[0]) * 100
+        # Prediction confidence (if supported)
+        if hasattr(pipeline, "predict_proba"):
+            probabilities = pipeline.predict_proba(cleaned_query)
+            confidence = round(max(probabilities[0]) * 100, 2)
+        else:
+            confidence = 100.00
 
         # Prediction mapping
         if prediction[0] == 1:
@@ -56,165 +58,143 @@ def predict():
             icon = "❌"
 
         return f"""
-        <!DOCTYPE html>
+<!DOCTYPE html>
+<html>
 
-        <html>
+<head>
 
-        <head>
+    <title>Fake News Detector | Prediction Result</title>
 
-            <title>Prediction Result</title>
+    <style>
 
-            <style>
+        body {{
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #2563eb);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }}
 
-                body {{
-                    font-family: Arial, Helvetica, sans-serif;
-                    background: linear-gradient(135deg,#0f172a,#2563eb);
-                    margin:0;
-                    display:flex;
-                    justify-content:center;
-                    align-items:center;
-                    height:100vh;
-                }}
+        .card {{
+            background: white;
+            width: 500px;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }}
 
-                .card {{
+        h1 {{
+            color: {color};
+            margin-bottom: 20px;
+        }}
 
-                    background:white;
+        h2 {{
+            color: #333;
+            margin-bottom: 10px;
+        }}
 
-                    width:500px;
+        .confidence {{
+            font-size: 32px;
+            font-weight: bold;
+            color: #2563eb;
+            margin: 20px 0;
+        }}
 
-                    padding:40px;
+        button {{
+            margin-top: 25px;
+            padding: 15px 30px;
+            background: #2563eb;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }}
 
-                    border-radius:15px;
+        button:hover {{
+            background: #1d4ed8;
+        }}
 
-                    text-align:center;
+    </style>
 
-                    box-shadow:0 15px 35px rgba(0,0,0,.3);
+</head>
 
-                }}
+<body>
 
-                h1 {{
+    <div class="card">
 
-                    color:{color};
+        <h1>{icon} {result}</h1>
 
-                    margin-bottom:20px;
+        <h2>Prediction Confidence</h2>
 
-                }}
+        <div class="confidence">
+            {confidence}%
+        </div>
 
-                h2 {{
+        <form action="/">
 
-                    color:#333;
+            <button type="submit">
+                🔍 Check Another News
+            </button>
 
-                }}
+        </form>
 
-                p {{
+    </div>
 
-                    font-size:22px;
+</body>
 
-                    color:#555;
-
-                }}
-
-                .confidence {{
-
-                    font-size:30px;
-
-                    color:#2563eb;
-
-                    font-weight:bold;
-
-                    margin-top:15px;
-
-                }}
-
-                button {{
-
-                    margin-top:30px;
-
-                    padding:15px 30px;
-
-                    font-size:18px;
-
-                    background:#2563eb;
-
-                    color:white;
-
-                    border:none;
-
-                    border-radius:8px;
-
-                    cursor:pointer;
-
-                }}
-
-                button:hover {{
-
-                    background:#1d4ed8;
-
-                }}
-
-            </style>
-
-        </head>
-
-        <body>
-
-            <div class="card">
-
-                <h1>{icon} {result}</h1>
-
-                <h2>Prediction Confidence</h2>
-
-                <div class="confidence">
-
-                    {confidence:.2f}%
-
-                </div>
-
-                <form action="/">
-
-                    <button type="submit">
-
-                        🔍 Check Another News
-
-                    </button>
-
-                </form>
-
-            </div>
-
-        </body>
-
-        </html>
-        """
+</html>
+"""
 
     except Exception as e:
 
         return f"""
-        <html>
+<!DOCTYPE html>
+<html>
 
-        <body style="font-family:Arial; text-align:center; margin-top:100px;">
+<head>
 
-            <h2>Something went wrong!</h2>
+    <title>Fake News Detector | Error</title>
 
-            <p>{str(e)}</p>
+</head>
 
-            <br>
+<body style="font-family:Arial; text-align:center; margin-top:100px;">
 
-            <form action="/">
+    <h2>Something went wrong!</h2>
 
-                <button type="submit">
+    <p>{str(e)}</p>
 
-                    Go Back
+    <br>
 
-                </button>
+    <form action="/">
 
-            </form>
+        <button
+            type="submit"
+            style="
+                padding:12px 25px;
+                font-size:18px;
+                background:#dc3545;
+                color:white;
+                border:none;
+                border-radius:5px;
+                cursor:pointer;">
 
-        </body>
+            Go Back
 
-        </html>
-        """
+        </button>
+
+    </form>
+
+</body>
+
+</html>
+"""
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8080)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
